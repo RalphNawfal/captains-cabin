@@ -1,0 +1,26 @@
+name = "captains-cabin-auth"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+# Only non-secret configuration belongs here. This file is committed to a public
+# repository.
+#
+# ALLOWED_ORIGINS is the allowlist of sites permitted to use this relay. Without
+# it the Worker refuses to start — an OAuth relay with no allowlist is an open
+# relay that anyone can point at their own CMS.
+#
+# Add the custom domain to this list when the domain is registered, and redeploy.
+[vars]
+ALLOWED_ORIGINS = "https://ralphnawfal.github.io"
+
+# Secrets are NOT set here. Set them once, from your machine:
+#
+#   cd worker
+#   npx wrangler secret put GITHUB_CLIENT_ID
+#   npx wrangler secret put GITHUB_CLIENT_SECRET
+#
+# They are stored encrypted by Cloudflare and are never readable again, including
+# by us. Nothing secret may enter this repository.
+
+[observability]
+enabled = true

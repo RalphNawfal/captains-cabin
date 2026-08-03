@@ -61,3 +61,6 @@ andre-check.jpg
 # Playwright MCP artefacts from viewport testing.
 .playwright-mcp/
 *.jpeg
+
+# Wrangler local dev state for the auth Worker.
+worker/.wrangler/
