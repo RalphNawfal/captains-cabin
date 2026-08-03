@@ -1,0 +1,15 @@
+# Normalise line endings — this repo is authored on Windows and built on Linux CI.
+* text=auto eol=lf
+
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.webp binary
+*.avif binary
+*.woff  binary
+*.woff2 binary
+
+# Generated — keep them out of diffs and out of language stats.
+lib/image-manifest.json linguist-generated=true
+public/sitemap.xml      linguist-generated=true
+public/robots.txt       linguist-generated=true

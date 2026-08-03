@@ -1,0 +1,125 @@
+# Sveltia CMS configuration.
+#
+# Editing this file changes what the client sees at /admin/.
+#
+# BEFORE HANDOVER:
+#   1. Replace `repo` with the client's GitHub org/repo.
+#   2. Set up the GitHub OAuth backend on the host (Cloudflare Pages and Netlify
+#      both provide this; Sveltia also ships a standalone auth worker).
+#   3. Invite the client as a collaborator on the repo.
+#   4. Walk them through one price change end to end. If GitHub auth defeats
+#      them, swap this out for the Google Sheet ingest — content/menu.json keeps
+#      the same shape either way, so no components change.
+
+backend:
+  name: github
+  repo: CLIENT-ORG/captains-cabin # UNCONFIRMED — set to the client's repo
+  branch: main
+
+# Saves land as commits on `main`, which triggers the host's deploy.
+publish_mode: simple
+
+locale: en
+
+media_folder: assets/images
+public_folder: /img
+
+collections:
+  - name: menu
+    label: Menu
+    files:
+      - name: drinks
+        label: Drinks menu
+        file: content/menu.json
+        description: >-
+          Change prices, add or remove drinks. Saving publishes to the live site
+          in about a minute.
+        fields:
+          - name: currency
+            label: Currency
+            widget: select
+            options: ['USD', 'LBP']
+            default: USD
+            hint: The currency all prices below are written in.
+
+          - name: pricesConfirmed
+            label: Show prices on the site
+            widget: boolean
+            default: false
+            hint: >-
+              Leave off until every price below is correct. While it is off the
+              site shows "ask at the bar" instead of prices.
+
+          - name: lastUpdated
+            label: Last updated
+            widget: datetime
+            date_format: 'YYYY-MM-DD'
+            time_format: false
+            picker_utc: true
+
+          - name: currencyNote
+            label: Currency note
+            widget: object
+            collapsed: true
+            fields:
+              - { name: en, label: English, widget: string }
+              - { name: ar, label: Arabic, widget: string }
+
+          - name: sections
+            label: Sections
+            label_singular: Section
+            widget: list
+            summary: '{{fields.name.en}}'
+            fields:
+              - name: id
+                label: ID
+                widget: string
+                hint: Lowercase, no spaces. Used in the page anchor — avoid changing it.
+
+              - name: name
+                label: Section name
+                widget: object
+                fields:
+                  - { name: en, label: English, widget: string }
+                  - { name: ar, label: Arabic, widget: string }
+
+              - name: note
+                label: Section note
+                widget: object
+                required: false
+                collapsed: true
+                fields:
+                  - { name: en, label: English, widget: string, required: false }
+                  - { name: ar, label: Arabic, widget: string, required: false }
+
+              - name: items
+                label: Drinks
+                label_singular: Drink
+                widget: list
+                summary: '{{fields.name.en}}'
+                fields:
+                  - { name: id, label: ID, widget: string }
+
+                  - name: name
+                    label: Name
+                    widget: object
+                    fields:
+                      - { name: en, label: English, widget: string }
+                      - { name: ar, label: Arabic, widget: string }
+
+                  - name: description
+                    label: Description
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - { name: en, label: English, widget: string, required: false }
+                      - { name: ar, label: Arabic, widget: string, required: false }
+
+                  - name: price
+                    label: Price
+                    widget: number
+                    required: false
+                    value_type: float
+                    min: 0
+                    hint: Leave empty to show "ask at the bar" for this drink.

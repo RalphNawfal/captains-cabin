@@ -1,0 +1,29 @@
+{
+  "name": "captains-cabin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Website for Captain's Cabin, a bar in Hamra, Beirut. Est. 1964.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "prepare-assets": "node scripts/optimise-images.mjs && node scripts/generate-brand-assets.mjs && node scripts/generate-seo-files.mjs",
+    "dev": "npm run prepare-assets && next dev --webpack",
+    "build": "npm run prepare-assets && next build --webpack",
+    "build:turbopack": "npm run prepare-assets && next build",
+    "images": "node scripts/optimise-images.mjs",
+    "seo": "node scripts/generate-seo-files.mjs",
+    "brand": "node scripts/generate-brand-assets.mjs",
+    "serve": "node scripts/serve-out.mjs"
+  },
+  "dependencies": {
+    "next": "^16.2.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "postcss": "^8.5.25",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

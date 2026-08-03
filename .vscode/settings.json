@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.eol": "\n",
+  "search.exclude": {
+    "**/out": true,
+    "**/.next": true,
+    "**/node_modules": true,
+    "assets/images/_originals": true,
+    "public/img": true
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.experimental.classRegex": [["className\\s*[:=]\\s*[\"'`]([^\"'`]*)"]]
+}

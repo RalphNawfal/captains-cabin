@@ -1,0 +1,364 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Captain's Cabin — visual identity
+   Dark wood panelling, the ochre of the signed walls, warm low light.
+   This palette belongs to the bar. Nothing here is shared with any other site.
+   --------------------------------------------------------------------------- */
+
+@theme {
+  --color-ink: #0d0906;
+  --color-wood: #1a1109;
+  --color-wood-raised: #241708;
+  --color-wall: #d8a63c;
+  --color-wall-bright: #f0c96a;
+  --color-cream: #f4ead6;
+  --color-muted: #a58f6d;
+  --color-ember: #c14a32;
+  --color-line: #34240f;
+
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+
+  --text-hero: clamp(2.5rem, 9vw, 5.5rem);
+  --text-section: clamp(1.75rem, 5vw, 2.75rem);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-ink);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+    /* Nothing should ever push the page sideways on a phone. */
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-wall-bright);
+    outline-offset: 3px;
+  }
+
+  img {
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+}
+
+@layer components {
+  /* The signed-wall texture: warm ochre grain, no image request. */
+  .wall-texture {
+    background-color: var(--color-wood);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgb(216 166 60 / 0.16), transparent 70%),
+      repeating-linear-gradient(
+        90deg,
+        rgb(0 0 0 / 0.22) 0px,
+        rgb(0 0 0 / 0.22) 1px,
+        transparent 1px,
+        transparent 7px
+      );
+  }
+
+  /* Vertical wood panelling. */
+  .wood-panel {
+    background-color: var(--color-wood);
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.028) 0px,
+      rgb(255 255 255 / 0.028) 1px,
+      transparent 1px,
+      transparent 26px
+    );
+  }
+
+  /* Tap targets: this gets used outdoors, at night, one-handed. */
+  .tap {
+    min-block-size: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  /*
+   * Same 44px hit area for links that must stay visually inline — nav items,
+   * footer links, "see the menu". The box grows vertically around the text
+   * without adding visible height, so the rhythm of the page is unchanged.
+   */
+  .tap-inline {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+  }
+
+  /* Underline that draws in from the left on hover, instead of just appearing. */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition:
+      background-size 260ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 200ms ease;
+  }
+
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Photographs lift very slightly under the cursor. */
+  .lift {
+    transition:
+      transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+      filter 420ms ease;
+  }
+
+  .lift:hover {
+    transform: translateY(-4px) scale(1.012);
+    filter: brightness(1.06);
+  }
+
+  /* ---- FAQ accordions ------------------------------------------------- */
+
+  .faq-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    cursor: pointer;
+    list-style: none;
+    transition: color 200ms ease;
+  }
+
+  /* Chrome/Safari draw their own triangle; we supply our own marker. */
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-summary:hover dt {
+    color: var(--color-wall-bright);
+  }
+
+  /* A plus that rotates into a minus. */
+  .faq-marker {
+    position: relative;
+    flex: none;
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+
+  .faq-marker::before,
+  .faq-marker::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: 2px;
+    background: var(--color-wall);
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .faq-marker::after {
+    transform: rotate(90deg);
+  }
+
+  .faq[open] .faq-marker::after {
+    transform: rotate(0deg);
+  }
+
+  .faq[open] .faq-summary dt {
+    color: var(--color-wall-bright);
+  }
+
+  /* Answers slide open where the browser supports interpolating to auto. */
+  .faq::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      block-size 360ms cubic-bezier(0.16, 1, 0.3, 1),
+      content-visibility 360ms allow-discrete,
+      opacity 260ms ease;
+  }
+
+  .faq[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion
+   ---------------------------------------------------------------------------
+   Restrained on purpose: a fade-up on load, and sections settling into place as
+   you reach them. All CSS, zero JavaScript.
+
+   The scroll-driven pieces are opt-IN behind @supports. Where scroll timelines
+   are missing (Firefox today) or motion is unwanted, elements render in their
+   final state — no hidden content, no reliance on script to reveal anything.
+   --------------------------------------------------------------------------- */
+
+@layer components {
+  /* Time-based, runs once on load. */
+  .arrive {
+    animation: arrive 1200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .arrive-slow {
+    animation: arrive-scale 1800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .arrive-delay-1 {
+    animation-delay: 120ms;
+  }
+  .arrive-delay-2 {
+    animation-delay: 260ms;
+  }
+  .arrive-delay-3 {
+    animation-delay: 400ms;
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes arrive-scale {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @layer components {
+    /* Sections lift into place as they enter the viewport. */
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 55%;
+    }
+
+    /* Photographs drift slightly slower than the page — depth, not a gimmick. */
+    .drift {
+      animation: drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+      will-change: transform;
+    }
+
+    /* The wall of names: warms up as you reach it, like the light finding it. */
+    .warm {
+      animation: warm linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
+  }
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: translateY(-3%) scale(1.06);
+    }
+    to {
+      transform: translateY(3%) scale(1.06);
+    }
+  }
+
+  @keyframes warm {
+    from {
+      opacity: 0.5;
+      filter: saturate(0.65) brightness(0.8);
+    }
+    to {
+      opacity: 1;
+      filter: none;
+    }
+  }
+}
+
+/*
+ * Anyone who has asked for less motion gets none of it, including the
+ * scroll-driven pieces — and critically, everything stays fully visible.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-timeline: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .arrive,
+  .arrive-slow,
+  .reveal,
+  .drift,
+  .warm,
+  .lift:hover {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* Accordions still open and close — they just do it instantly. */
+  .faq::details-content {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,15 @@
+Copyright (c) 2026 Captain's Cabin, Hamra, Beirut.
+
+All rights reserved.
+
+This site was produced for Captain's Cabin by Tramano Creative as commissioned work.
+On delivery, ownership of the source code in this repository transfers to the client.
+It is not open source and carries no licence to copy, redistribute or reuse.
+
+Third-party components retain their own licences — see node_modules and package.json.
+
+PHOTOGRAPHS: the images under assets/ and public/img/ are NOT covered by the above
+and are NOT owned by the client. They were sourced from the venue's Google Maps
+listing, where each was uploaded by an individual contributor who retains copyright.
+See assets/photo-provenance.json; every entry is marked rightsCleared: false. They
+must be licensed, replaced, or knowingly accepted as a risk before publication.
