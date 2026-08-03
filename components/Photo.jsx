@@ -1,4 +1,5 @@
 import manifest from '@/lib/image-manifest.json'
+import { asset } from '@/lib/paths'
 
 /**
  * Static-export image element.
@@ -15,10 +16,12 @@ export default function Photo({ name, alt, sizes = '100vw', priority = false, cl
   const entry = manifest[name]
   if (!entry) return null
 
+  // Manifest paths are stored root-relative; asset() adds the base path so the
+  // same manifest works at / and at /captains-cabin/.
   const srcset = (format) =>
-    entry.sources[format].map((s) => `${s.src} ${s.width}w`).join(', ')
+    entry.sources[format].map((s) => `${asset(s.src)} ${s.width}w`).join(', ')
 
-  const fallback = entry.sources.webp.at(-1)?.src
+  const fallback = asset(entry.sources.webp.at(-1)?.src)
 
   return (
     <img
@@ -45,14 +48,15 @@ export function PhotoPicture({ name, alt, sizes = '100vw', priority = false, cla
   const entry = manifest[name]
   if (!entry) return null
 
-  const srcset = (format) => entry.sources[format].map((s) => `${s.src} ${s.width}w`).join(', ')
+  const srcset = (format) =>
+    entry.sources[format].map((s) => `${asset(s.src)} ${s.width}w`).join(', ')
 
   return (
     <picture>
       <source type="image/avif" srcSet={srcset('avif')} sizes={sizes} />
       <source type="image/webp" srcSet={srcset('webp')} sizes={sizes} />
       <img
-        src={entry.sources.webp.at(-1)?.src}
+        src={asset(entry.sources.webp.at(-1)?.src)}
         width={entry.width}
         height={entry.height}
         alt={alt}
