@@ -2,19 +2,26 @@
 #
 # Editing this file changes what the client sees at /admin/.
 #
+# GitHub Pages serves static files only, so it cannot complete an OAuth exchange.
+# `base_url` points at a Cloudflare Worker running sveltia-cms-auth, which holds
+# the OAuth client secret.
+#
+# NOTHING SECRET BELONGS IN THIS FILE — it is served publicly. The client ID and
+# secret live in the Worker's environment (`wrangler secret put`), never here.
+#
 # BEFORE HANDOVER:
-#   1. Replace `repo` with the client's GitHub org/repo.
-#   2. Set up the GitHub OAuth backend on the host (Cloudflare Pages and Netlify
-#      both provide this; Sveltia also ships a standalone auth worker).
-#   3. Invite the client as a collaborator on the repo.
-#   4. Walk them through one price change end to end. If GitHub auth defeats
+#   1. Transfer the repo to the client, then update `repo` below.
+#   2. Invite the client as a collaborator.
+#   3. Walk them through one price change end to end. If GitHub auth defeats
 #      them, swap this out for the Google Sheet ingest — content/menu.json keeps
 #      the same shape either way, so no components change.
 
 backend:
   name: github
-  repo: CLIENT-ORG/captains-cabin # UNCONFIRMED — set to the client's repo
+  repo: RalphNawfal/captains-cabin
   branch: main
+  # Cloudflare Worker running sveltia-cms-auth. Replace <subdomain> with yours.
+  base_url: https://captains-cabin-auth.<subdomain>.workers.dev
 
 # Saves land as commits on `main`, which triggers the host's deploy.
 publish_mode: simple

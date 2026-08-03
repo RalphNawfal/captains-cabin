@@ -4,17 +4,42 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
+    <!--
+      This page's own policy. The sitewide CSP is deliberately stricter; widening
+      it for the CMS would weaken every public page. Kept in step with
+      lib/csp.js (CSP_ADMIN) by hand — this file is plain static HTML and is not
+      processed by the build.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src 'self' data:; connect-src https://api.github.com https://github.com https://unpkg.com; object-src 'none'; base-uri 'self'"
+    />
     <title>Captain's Cabin — edit the menu</title>
   </head>
   <body>
     <!--
       Sveltia CMS — a static admin shell. It talks straight to GitHub, so there is
       no server and no database: saving here commits to content/menu.json and the
-      host rebuilds the site automatically.
+      deploy workflow rebuilds the site.
 
-      Pinned to a major version rather than @latest so a breaking upstream release
-      can never take the client's menu editor down without us doing it.
+      Pinned to an exact version, not a range, so a breaking upstream release can
+      never take the client's menu editor down without us doing it.
+
+      `integrity` is the important part: this script runs with the client's GitHub
+      token in scope, so a compromised or swapped CDN response would be able to
+      act on the repository. The hash is of @sveltia/cms@0.117.0 (1,491,668 bytes).
+      If you bump the version you MUST recompute it:
+
+        curl -sL https://unpkg.com/@sveltia/cms@<version>/dist/sveltia-cms.js \
+          | openssl dgst -sha384 -binary | openssl base64 -A
+
+      `crossorigin` is required for the browser to check integrity on a
+      cross-origin script.
     -->
-    <script src="https://unpkg.com/@sveltia/cms@0.117.0/dist/sveltia-cms.js"></script>
+    <script
+      src="https://unpkg.com/@sveltia/cms@0.117.0/dist/sveltia-cms.js"
+      integrity="sha384-GP2NNGK6vACuTXQrXlhUFDJEk161+yBAmYEPcVh3bJlfcE7aogRbLpaq1EHwaf4X"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

@@ -22,6 +22,7 @@ import path from 'node:path'
 const { SITE_URL, site } = await import('../lib/site.js')
 const { ROUTES } = await import('../lib/metadata.js')
 const { copy } = await import('../lib/copy.js')
+const { asset, BASE_PATH } = await import('../lib/paths.js')
 
 const PUBLIC_DIR = path.join(process.cwd(), 'public')
 const TODAY = new Date().toISOString().slice(0, 10)
@@ -56,14 +57,19 @@ const AI_AGENTS = [
   'CCBot', // Common Crawl — feeds many models
 ]
 
+// robots.txt paths are relative to the host root, not the base path, so they need
+// the prefix when the site is served from a subpath.
+const ALLOW = asset('/') || '/'
+const DISALLOW_ADMIN = asset('/admin/')
+
 const robots = `# ${site.name} — ${site.address.neighbourhood}, ${site.address.city}
 # Everything here is public. Crawl it.
 
 User-agent: *
-Allow: /
-Disallow: /admin/
+Allow: ${ALLOW}
+Disallow: ${DISALLOW_ADMIN}
 
-${AI_AGENTS.map((agent) => `User-agent: ${agent}\nAllow: /\nDisallow: /admin/\n`).join('\n')}
+${AI_AGENTS.map((agent) => `User-agent: ${agent}\nAllow: ${ALLOW}\nDisallow: ${DISALLOW_ADMIN}\n`).join('\n')}
 Sitemap: ${SITE_URL}/sitemap.xml
 `
 
@@ -172,14 +178,15 @@ const manifest = {
   name: site.name,
   short_name: site.name,
   description: copy.meta.homeDescription,
-  start_url: '/',
+  start_url: asset('/'),
+  scope: asset('/'),
   display: 'browser',
   background_color: '#0d0906',
   theme_color: '#0d0906',
   icons: [
-    { src: '/favicon-96.png', sizes: '96x96', type: 'image/png' },
-    { src: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    { src: asset('/favicon-96.png'), sizes: '96x96', type: 'image/png' },
+    { src: asset('/apple-touch-icon.png'), sizes: '180x180', type: 'image/png' },
+    { src: asset('/icon-512.png'), sizes: '512x512', type: 'image/png' },
   ],
 }
 
@@ -191,52 +198,27 @@ const manifest = {
  * live as soon as the deploy finishes.
  */
 /**
- * Content Security Policy.
+ * Security + caching headers.
  *
- * `'unsafe-inline'` on script-src is unavoidable and deliberate: Next.js embeds
- * the RSC payload as inline <script> blocks, and a static export has no server
- * to mint per-request nonces. The policy still earns its place — it blocks every
- * *external* script origin, which is the realistic injection vector, plus
- * object/embed entirely and framing by anyone else.
+ * ⚠ GitHub Pages ignores this file entirely — `_headers` is a Netlify and
+ *   Cloudflare Pages convention. On Pages the enforceable policy is the
+ *   <meta http-equiv> tag in app/(en)/layout.jsx instead, and the header-only
+ *   protections below (X-Frame-Options, Permissions-Policy,
+ *   X-Content-Type-Options, frame-ancestors) are simply unavailable.
  *
- * style-src needs it too: React writes inline `style` attributes (aspect-ratio
- * on every image).
+ *   This file is kept because it is correct the day the site moves to a
+ *   header-capable host, which is the reason to move.
  *
- * frame-src is scoped to Google Maps, the single embed on the site.
+ * The policies come from lib/csp.js so the meta tag and this file cannot drift.
  */
-const CSP = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://*.googleapis.com https://*.gstatic.com https://maps.google.com",
-  "font-src 'self'",
-  "connect-src 'self'",
-  'frame-src https://maps.google.com https://www.google.com',
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'none'",
-  "frame-ancestors 'self'",
-  'upgrade-insecure-requests',
-].join('; ')
+const { CSP_HEADER, CSP_ADMIN } = await import('../lib/csp.js')
+const CSP = CSP_HEADER
+const ADMIN_CSP = CSP_ADMIN
 
-/**
- * The CMS shell is the one page that loads a third-party script (Sveltia from
- * unpkg) and talks to GitHub, so it gets its own looser policy rather than
- * loosening the whole site.
- */
-const ADMIN_CSP = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com",
-  "style-src 'self' 'unsafe-inline'",
-  'img-src * data: blob:',
-  "font-src 'self' data:",
-  'connect-src https://api.github.com https://github.com https://unpkg.com',
-  "object-src 'none'",
-  "base-uri 'self'",
-  "frame-ancestors 'none'",
-].join('; ')
+const headers = `# NOTE: GitHub Pages ignores this file. It applies on Netlify and
+# Cloudflare Pages. See lib/csp.js and the meta CSP in app/(en)/layout.jsx.
 
-const headers = `/*
+/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
