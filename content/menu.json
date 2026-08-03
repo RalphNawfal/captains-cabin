@@ -1,0 +1,51 @@
+{
+  "_comment": "PLACEHOLDER STRUCTURE. No menu for Captain's Cabin exists in any public source — not as text, not as a photo, not on any aggregator. Every item below is a scaffold to be filled in with the client. Set pricesConfirmed to true only once Andre has confirmed the actual list and prices. The two items marked verified:true are the only ones with any external corroboration (Google derives them from review text).",
+  "currency": "USD",
+  "currencyNote": "Prices in US dollars",
+  "pricesConfirmed": false,
+  "lastUpdated": "2026-08-03",
+  "sections": [
+    {
+      "id": "beer",
+      "name": "Beer",
+      "items": [
+        { "id": "almaza", "name": "Almaza", "description": "The Lebanese lager. What most of the room is drinking.", "price": null, "verified": true },
+        { "id": "local-beer", "name": "Other local beer", "description": "", "price": null },
+        { "id": "imported-beer", "name": "Imported beer", "description": "", "price": null }
+      ]
+    },
+    {
+      "id": "spirits",
+      "name": "Spirits",
+      "items": [
+        { "id": "whiskey", "name": "Whiskey", "description": "", "price": null },
+        { "id": "arak", "name": "Arak", "description": "", "price": null },
+        { "id": "vodka", "name": "Vodka", "description": "", "price": null },
+        { "id": "gin", "name": "Gin", "description": "", "price": null }
+      ]
+    },
+    {
+      "id": "long-drinks",
+      "name": "Long drinks",
+      "note": "Poured tall, poured strong. No cocktail list, and none needed.",
+      "items": [
+        { "id": "whiskey-pepsi", "name": "Whiskey & Pepsi", "description": "", "price": null, "verified": true },
+        { "id": "vodka-soda", "name": "Vodka & soda", "description": "", "price": null },
+        { "id": "gin-tonic", "name": "Gin & tonic", "description": "", "price": null }
+      ]
+    },
+    {
+      "id": "soft",
+      "name": "Soft drinks",
+      "items": [
+        { "id": "soft-drink", "name": "Soft drinks", "description": "", "price": null },
+        { "id": "water", "name": "Water", "description": "", "price": null }
+      ]
+    },
+    {
+      "id": "snacks",
+      "name": "Snacks",
+      "items": [{ "id": "nuts", "name": "Nuts", "description": "", "price": null }]
+    }
+  ]
+}
