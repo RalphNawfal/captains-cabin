@@ -130,6 +130,27 @@ for (const file of htmlFiles) {
   }
 }
 console.log(`  ${missing.size ? 'FAIL' : 'ok  '} ${checked} references checked, ${missing.size} broken`)
+
+/**
+ * Self-diagnosis. If PAGES_BASE_PATH is unset but every reference shares a
+ * leading directory that is not on disk, the environment is wrong rather than
+ * the build — this script has to see the same env the build had. Emitting one
+ * clear line beats a hundred "asset not found".
+ */
+if (!BASE && missing.size > 10) {
+  const first = [...missing]
+    .map((m) => m.split('/')[1])
+    .filter(Boolean)
+  const shared = first.every((s) => s === first[0]) ? first[0] : null
+  if (shared && !fs.existsSync(path.join(OUT, shared))) {
+    console.log(
+      `\n  Every broken reference starts with "/${shared}", which is not in out/.` +
+        `\n  PAGES_BASE_PATH is unset here — it must match the value used for the build.`
+    )
+    fail(`PAGES_BASE_PATH looks unset; expected "/${shared}"`)
+  }
+}
+
 for (const m of [...missing].slice(0, 15)) {
   fail(`asset not found: ${m}`)
   console.log(`       ${m}`)
