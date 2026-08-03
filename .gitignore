@@ -57,3 +57,7 @@ assets/images/_originals/
 # Scratch output from the photo contact sheet.
 contact-sheet.jpg
 andre-check.jpg
+
+# Playwright MCP artefacts from viewport testing.
+.playwright-mcp/
+*.jpeg

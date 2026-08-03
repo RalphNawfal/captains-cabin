@@ -2,6 +2,7 @@ import '../globals.css'
 import { display, body } from '@/lib/fonts'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import StickyActions from '@/components/StickyActions'
 import { CSP_META } from '@/lib/csp'
 
 export const viewport = {
@@ -28,6 +29,8 @@ export default function RootLayout({ children }) {
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        {/* Phones only — call and directions reachable from any scroll position. */}
+        <StickyActions />
       </body>
     </html>
   )

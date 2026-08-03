@@ -1,10 +1,11 @@
+import Action from '@/components/Action'
 import JsonLd from '@/components/JsonLd'
 import { PhotoPicture } from '@/components/Photo'
 import { copy } from '@/lib/copy'
+import { site } from '@/lib/site'
 import { pageGraph } from '@/lib/schema'
 import { ROUTES } from '@/lib/metadata'
 
-/** One photograph per story section, in order. */
 /**
  * One photograph per story section, in order. The third slot lines up with the
  * "Andre" section — the portrait is the whole reason that section works.
@@ -73,6 +74,23 @@ export default function StoryPage() {
             )
           })}
         </div>
+
+        {/* The story ends on an invitation, not a full stop. */}
+        <section className="border-line mt-14 border-t pt-10">
+          <h2 className="font-display text-wall mb-3 text-2xl font-bold uppercase">
+            {copy.common.comeIn}
+          </h2>
+          <p className="text-muted mb-6 max-w-[58ch]">{copy.home.inviteBody}</p>
+          <div className="flex flex-wrap gap-3">
+            <Action href={site.maps.directions}>{copy.common.directions}</Action>
+            <Action href={`tel:${site.telephone.e164}`} variant="secondary">
+              {copy.common.call}
+            </Action>
+            <Action href={ROUTES.menu} variant="secondary">
+              {copy.common.viewMenu}
+            </Action>
+          </div>
+        </section>
 
         <section className="border-line mt-14 border-t pt-8">
           <h2 className="font-display text-wall mb-4 text-sm font-bold tracking-widest uppercase">

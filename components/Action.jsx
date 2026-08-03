@@ -12,13 +12,13 @@ const STYLES = {
  * One control for both internal links and external/tel: links, so tap-target
  * sizing and focus styles can never drift apart between the two.
  */
-export default function Action({ href, variant = 'primary', children, ...rest }) {
-  const className = STYLES[variant]
+export default function Action({ href, variant = 'primary', className = '', children, ...rest }) {
+  const classes = `${STYLES[variant]} ${className}`.trim()
   const isInternal = href.startsWith('/') && !href.startsWith('//')
 
   if (isInternal) {
     return (
-      <Link href={href} className={className} {...rest}>
+      <Link href={href} className={classes} {...rest}>
         {children}
       </Link>
     )
@@ -29,7 +29,7 @@ export default function Action({ href, variant = 'primary', children, ...rest })
   return (
     <a
       href={href}
-      className={className}
+      className={classes}
       {...(isExternalHttp ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       {...rest}
     >

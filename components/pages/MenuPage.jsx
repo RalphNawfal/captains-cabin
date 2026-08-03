@@ -40,8 +40,19 @@ export default function MenuPage() {
           <MenuList />
         </div>
 
-        <div className="mt-12">
-          <Action href={`tel:${site.telephone.e164}`}>{copy.common.call}</Action>
+        <div className="border-line mt-12 border-t pt-8">
+          <h2 className="font-display text-wall mb-3 text-2xl font-bold uppercase">
+            {copy.common.comeIn}
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            <Action href={`tel:${site.telephone.e164}`}>{copy.common.call}</Action>
+            <Action href={site.maps.directions} variant="secondary">
+              {copy.common.directions}
+            </Action>
+            <Action href={ROUTES.findUs} variant="quiet">
+              {copy.nav.findUs}
+            </Action>
+          </div>
         </div>
       </div>
     </>

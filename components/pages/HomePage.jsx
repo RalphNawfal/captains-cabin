@@ -59,27 +59,29 @@ export default function HomePage() {
           />
         </div>
 
-        <Container className="relative py-20 sm:py-28 lg:py-32">
+        {/* Tight top padding on phones. Measured: the old py-20 pushed the CTAs
+            to 696px, which is below the fold once a phone's URL bar is
+            accounted for. */}
+        <Container className="relative py-10 sm:py-28 lg:py-32">
           <div className="max-w-2xl">
-            <p className="font-display text-wall arrive mb-4 text-sm font-semibold tracking-[0.3em] uppercase">
+            <p className="font-display text-wall arrive mb-3 text-sm font-semibold tracking-[0.3em] uppercase">
               {copy.home.established}
             </p>
             <h1 className="font-display text-cream arrive arrive-delay-1 text-[length:var(--text-hero)] font-bold uppercase">
               {copy.home.title}
             </h1>
-            <p className="text-wall-bright font-display arrive arrive-delay-2 mt-3 text-xl font-medium sm:text-2xl">
+            <p className="text-wall-bright font-display arrive arrive-delay-2 mt-3 text-lg font-medium sm:text-2xl">
               {copy.home.tagline}
             </p>
 
-            <div className="arrive arrive-delay-3 mt-6">
+            <div className="arrive arrive-delay-3 mt-4">
               <OpenStatus fallback={hoursFallback} />
             </div>
 
-            <p className="text-cream/90 arrive arrive-delay-3 mt-6 max-w-[58ch]">
-              {copy.home.intro}
-            </p>
-
-            <div className="arrive arrive-delay-3 mt-8 flex flex-wrap gap-3">
+            {/* CTAs before the intro copy, not after it. Someone deciding whether
+                to walk in needs the phone and the map first; the paragraph is
+                for people who have already decided to read. */}
+            <div className="arrive arrive-delay-3 mt-6 flex flex-wrap gap-3">
               <Action href={`tel:${site.telephone.e164}`}>{copy.common.callShort}</Action>
               <Action href={site.maps.directions} variant="secondary">
                 {copy.common.directions}
@@ -89,8 +91,12 @@ export default function HomePage() {
               </Action>
             </div>
 
-            <p className="text-muted arrive arrive-delay-3 mt-6 text-sm">
+            <p className="text-muted arrive arrive-delay-3 mt-4 text-sm">
               {copy.home.ratingLine(site.reviews.ratingValue, site.reviews.reviewCount)}
+            </p>
+
+            <p className="text-cream/90 arrive arrive-delay-3 mt-6 max-w-[58ch]">
+              {copy.home.intro}
             </p>
           </div>
         </Container>
