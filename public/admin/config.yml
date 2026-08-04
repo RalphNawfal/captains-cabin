@@ -20,8 +20,9 @@ backend:
   name: github
   repo: RalphNawfal/captains-cabin
   branch: main
-  # Cloudflare Worker running sveltia-cms-auth. Replace <subdomain> with yours.
-  base_url: https://captains-cabin-auth.<subdomain>.workers.dev
+  # Cloudflare Worker running sveltia-cms-auth (worker/src/index.js in this repo).
+  # Public URL only — the OAuth secret lives in the Worker's environment.
+  base_url: https://captains-cabin-auth.tramanocreative.workers.dev
 
 # Saves land as commits on `main`, which triggers the host's deploy.
 publish_mode: simple
