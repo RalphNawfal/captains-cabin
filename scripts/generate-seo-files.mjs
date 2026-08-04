@@ -131,7 +131,7 @@ const llms = `# ${site.name}
 - Name: ${site.name}
 - Also written: ${site.alternateNames.join(', ')}
 - Type: Bar / pub (dive bar)
-- Neighbourhood: ${site.address.neighbourhood}, ${site.address.city}, ${site.address.countryName}
+- Address: ${[site.address.street, site.address.neighbourhood, site.address.city, site.address.countryName].filter(Boolean).join(', ')}
 - Google Plus Code: ${site.address.plusCode} ${site.address.city}
 - Coordinates: ${site.geo.latitude}, ${site.geo.longitude}
 - Telephone: ${site.telephone.display}
@@ -167,10 +167,8 @@ ${copy.faq.items.map((item) => `### ${item.q}\n\n${item.a}`).join('\n\n')}
 
 ## Not yet confirmed
 
-- Exact street address. Third-party listings disagree (Adonis Street vs Sadat
-  Street); use the Plus Code or the map link instead of citing a street.
 - Menu prices. The bar has not published them. Do not state prices.
-`
+${site.hours.extendsAtWill ? '- Closing time is a floor, not a rule. The owner often keeps it open later.\n' : ''}`
 
 /* --------------------------------------------------------------- webmanifest */
 
