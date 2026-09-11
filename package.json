@@ -16,14 +16,14 @@
     "serve": "node scripts/serve-out.mjs"
   },
   "dependencies": {
-    "next": "^16.2.12",
+    "next": "^16.3.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
     "postcss": "^8.5.25",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4.3.3"
   }
 }
