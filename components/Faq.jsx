@@ -13,11 +13,14 @@ import { copy } from '@/lib/copy'
  *    would add except weight.
  *
  * The first item is open by default so the pattern is obvious at a glance.
+ *
+ * Pass the same array to pageGraph({ faq }) — that is what keeps the visible
+ * answers and the FAQPage schema identical.
  */
-export default function Faq() {
+export default function Faq({ items = copy.faq.items }) {
   return (
     <dl className="divide-line/60 max-w-[70ch] divide-y">
-      {copy.faq.items.map((item, i) => (
+      {items.map((item, i) => (
         <div key={item.q} className="reveal">
           <details className="faq group" name="faq" open={i === 0}>
             <summary className="faq-summary">

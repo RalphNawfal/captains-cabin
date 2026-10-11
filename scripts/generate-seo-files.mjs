@@ -75,8 +75,8 @@ Sitemap: ${SITE_URL}/sitemap.xml
 
 /* ---------------------------------------------------------------- sitemap.xml */
 
-const CHANGE_FREQUENCY = { home: 'monthly', menu: 'monthly', story: 'yearly', findUs: 'yearly' }
-const PRIORITY = { home: '1.0', menu: '0.9', story: '0.8', findUs: '0.8' }
+const CHANGE_FREQUENCY = { home: 'monthly', menu: 'monthly', story: 'yearly', events: 'monthly', findUs: 'yearly' }
+const PRIORITY = { home: '1.0', menu: '0.9', story: '0.8', events: '0.8', findUs: '0.8' }
 
 const urls = Object.entries(ROUTES).map(
   ([key, route]) => `  <url>
@@ -158,6 +158,7 @@ ${[
   ['Home — hours, what the place is, questions', ROUTES.home],
   ['Menu — beer, spirits and long drinks', ROUTES.menu],
   ['Story — the bar since 1964', ROUTES.story],
+  ['Events — birthdays, private events, barbecue and catering', ROUTES.events],
   ['Find us — address, Plus Code, directions', ROUTES.findUs],
 ]
   .map(([label, route]) => `- [${label}](${SITE_URL}${route})`)

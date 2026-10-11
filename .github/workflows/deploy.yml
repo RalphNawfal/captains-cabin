@@ -45,11 +45,15 @@ jobs:
       # `base_path` is '' for a user/org site or a custom domain, and
       # '/captains-cabin' for a project site. lib/paths.js and next.config.mjs
       # both read it, which is what lets one build target either address.
+      #
+      # SITE_URL is the permanent address, not this mirror's: every canonical,
+      # og:url and sitemap entry points at captainscabin.pages.dev so the two
+      # copies never compete in search.
       - name: Build
         run: npm run build
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          SITE_URL: ${{ steps.pages.outputs.origin }}${{ steps.pages.outputs.base_path }}
+          SITE_URL: https://captainscabin.pages.dev
 
       # Gate: a build that leaks a secret, drops a canonical, loses alt text or
       # regresses the CSP must not reach production.
@@ -61,7 +65,7 @@ jobs:
         run: node scripts/verify-build.mjs
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          SITE_URL: ${{ steps.pages.outputs.origin }}${{ steps.pages.outputs.base_path }}
+          SITE_URL: https://captainscabin.pages.dev
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4

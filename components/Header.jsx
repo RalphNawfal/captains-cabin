@@ -4,13 +4,14 @@ import { ROUTES } from '@/lib/metadata'
 import { site } from '@/lib/site'
 
 /**
- * No hamburger, no client JS. Three links fit on a phone if you let them wrap.
+ * No hamburger, no client JS. Four links fit on a phone if you let them wrap.
  * A menu that needs JavaScript to open is a menu that fails on a bad connection.
  */
 export default function Header() {
   const links = [
     { href: ROUTES.menu, label: copy.nav.menu },
     { href: ROUTES.story, label: copy.nav.story },
+    { href: ROUTES.events, label: copy.nav.events },
     { href: ROUTES.findUs, label: copy.nav.findUs },
   ]
 

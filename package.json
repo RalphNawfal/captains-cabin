@@ -10,6 +10,7 @@
     "dev": "npm run prepare-assets && next dev --webpack",
     "build": "npm run prepare-assets && next build --webpack",
     "build:turbopack": "npm run prepare-assets && next build",
+    "deploy:pages": "npm run build && npx wrangler pages deploy out --project-name captainscabin --branch main",
     "images": "node scripts/optimise-images.mjs",
     "seo": "node scripts/generate-seo-files.mjs",
     "brand": "node scripts/generate-brand-assets.mjs",

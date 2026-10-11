@@ -19,6 +19,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = path.join(ROOT, 'out')
 
 const BASE = (process.env.PAGES_BASE_PATH || '').replace(/\/$/, '')
+/** Path prefix absolute URLs must carry: SITE_URL's own path, else BASE. */
+const CANONICAL_BASE = process.env.SITE_URL
+  ? new URL(process.env.SITE_URL).pathname.replace(/\/$/, '')
+  : BASE
 
 const failures = []
 const fail = (msg) => failures.push(msg)
@@ -39,7 +43,7 @@ function walk(dir, acc = []) {
 
 const files = walk(OUT)
 const htmlFiles = files.filter((f) => f.endsWith('.html'))
-const PAGES = ['index.html', 'menu/index.html', 'story/index.html', 'find-us/index.html']
+const PAGES = ['index.html', 'menu/index.html', 'story/index.html', 'events/index.html', 'find-us/index.html']
 
 /* ------------------------------------------------------- crawler-facing files */
 
@@ -192,7 +196,10 @@ for (const rel of PAGES) {
         break
       }
     }
-    if (BASE && !pathname.startsWith(BASE)) {
+    // Absolute URLs are built on SITE_URL, which is the canonical address — not
+    // necessarily this build's own. The GitHub Pages mirror serves assets under
+    // /captains-cabin but its canonicals point at the root of pages.dev.
+    if (CANONICAL_BASE && !pathname.startsWith(CANONICAL_BASE)) {
       urlProblems.push(`${rel}: missing base path — ${url}`)
     }
   }

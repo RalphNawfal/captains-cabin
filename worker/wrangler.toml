@@ -11,7 +11,7 @@ compatibility_date = "2026-01-01"
 #
 # Add the custom domain to this list when the domain is registered, and redeploy.
 [vars]
-ALLOWED_ORIGINS = "https://ralphnawfal.github.io"
+ALLOWED_ORIGINS = "https://ralphnawfal.github.io,https://captainscabin.pages.dev"
 
 # Secrets are NOT set here. Set them once, from your machine:
 #

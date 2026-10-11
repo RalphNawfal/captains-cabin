@@ -254,6 +254,9 @@ export default function HomePage() {
             </ul>
             <div className="mt-6 flex flex-wrap gap-3">
               <Action href={`tel:${site.telephone.e164}`}>{copy.home.eventsAction}</Action>
+              <Action href={ROUTES.events} variant="secondary">
+                {copy.home.eventsMore}
+              </Action>
             </div>
           </div>
         </div>
