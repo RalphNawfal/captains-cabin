@@ -122,6 +122,21 @@ export default function Footer() {
             {/* Photos are visitor uploads from the Google listing — see
                 assets/photo-provenance.json. Credit stays until rights are cleared. */}
             <p>{copy.footer.photoCredit}</p>
+
+            {/* Studio signature. Brand anchor text on purpose: a keyword anchor
+                repeated across every page of every client site is the pattern
+                Google treats as a link scheme. */}
+            <p>
+              {copy.footer.creditPrefix}{' '}
+              <a
+                href={copy.footer.creditUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tap-inline link-underline text-cream/80 hover:text-wall-bright"
+              >
+                {copy.footer.creditName}
+              </a>
+            </p>
           </div>
         </div>
       </div>
