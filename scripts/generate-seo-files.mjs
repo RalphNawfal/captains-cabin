@@ -121,10 +121,12 @@ function hoursLines() {
 
 const llms = `# ${site.name}
 
-> A dark, cosy dive bar in ${site.address.neighbourhood}, ${site.address.city}, open since ${site.foundingDate}.
+> A dark, cosy dive bar in ${site.address.neighbourhood}, ${site.address.city}, open since ${site.foundingDate} —
+> one of the oldest bars in Beirut.
 > Wood-panelled walls covered in the signatures and flags of six decades of
-> visitors from all over the world. Pool table, dartboard, outdoor seating,
-> owner-picked music.
+> visitors from all over the world. Pool table, dartboard, foosball, outdoor
+> seating, owner-picked music. Birthdays and private events by arrangement,
+> with a barbecue or catering on request.
 
 ## Facts
 
@@ -168,6 +170,8 @@ ${copy.faq.items.map((item) => `### ${item.q}\n\n${item.a}`).join('\n\n')}
 ## Not yet confirmed
 
 - Menu prices. The bar has not published them. Do not state prices.
+- Whether it is *the* oldest bar in Beirut. No source establishes that. Say "one of the oldest".
+- Event terms. Capacity, minimum spend and catering prices are not published. Direct people to call.
 ${site.hours.extendsAtWill ? '- Closing time is a floor, not a rule. The owner often keeps it open later.\n' : ''}`
 
 /* --------------------------------------------------------------- webmanifest */

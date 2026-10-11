@@ -15,8 +15,8 @@ import { pageGraph } from '@/lib/schema'
 /**
  * Ordered to tell it rather than list it:
  *
- *   the room → who has been in it → what is in it → outside → the music
- *   → the invitation → the questions people actually ask → menu, story, hours
+ *   the room → who has been in it → what is in it → outside → bring people
+ *   → the music → the invitation → the questions people actually ask → menu, story, hours
  *
  * Everything sits on the one grid from components/Layout.jsx, so the hero, every
  * heading and every photograph share a left edge at all widths.
@@ -25,7 +25,7 @@ import { pageGraph } from '@/lib/schema'
  * recognising the building is the job.
  */
 export default function HomePage() {
-  const [pool, darts, walls, flags, outside] = copy.home.features
+  const [pool, darts, walls, flags, outside, foosball] = copy.home.features
   const sampleDay = site.hours.weekly[5] ?? Object.values(site.hours.weekly)[0]
   // En dash to match HoursTable. This string is visible until OpenStatus hydrates.
   const hoursFallback = sampleDay
@@ -194,9 +194,17 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div className="border-line reveal mt-10 border-s-2 ps-4">
-          <h3 className="font-display text-cream text-lg font-semibold uppercase">{flags.title}</h3>
-          <p className="text-muted mt-1 max-w-[62ch]">{flags.body}</p>
+        {/* No photographs for these two — there is no foosball shot in the set,
+            and the flags already carry section 2. */}
+        <div className={`${TWO_COL} mt-10`}>
+          {[foosball, flags].map((feature) => (
+            <div key={feature.title} className="border-line reveal border-s-2 ps-4">
+              <h3 className="font-display text-cream text-lg font-semibold uppercase">
+                {feature.title}
+              </h3>
+              <p className="text-muted mt-1 max-w-[62ch]">{feature.body}</p>
+            </div>
+          ))}
         </div>
       </Section>
 
@@ -220,6 +228,35 @@ export default function HomePage() {
             </Prose>
           </div>
         </Split>
+      </Section>
+
+      {/* 4b — Birthdays and private events. Follows "Outside" because that is
+          where the barbecue happens. No photograph: a party shot means faces. */}
+      <Section tone="panel">
+        <div className={TWO_COL}>
+          <div className="reveal">
+            <Heading eyebrow={copy.home.eventsEyebrow}>{copy.home.eventsHeading}</Heading>
+            <Prose>
+              <p className="text-cream/85 text-lg">{copy.home.eventsBody}</p>
+              <p className="text-cream/75">{copy.home.eventsFood}</p>
+            </Prose>
+          </div>
+          <div className="reveal sm:self-end">
+            <ul className="divide-line/60 border-line/60 divide-y border-y">
+              {copy.home.eventsList.map((item) => (
+                <li
+                  key={item}
+                  className="font-display text-cream py-3 text-lg font-semibold uppercase"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Action href={`tel:${site.telephone.e164}`}>{copy.home.eventsAction}</Action>
+            </div>
+          </div>
+        </div>
       </Section>
 
       {/* 5 — The music. */}
