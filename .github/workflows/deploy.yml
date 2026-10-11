@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
@@ -82,3 +82,45 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+
+  # The permanent address. Built separately because it serves from the root:
+  # no PAGES_BASE_PATH, and SITE_URL falls back to the pages.dev default in
+  # lib/site.js. This is what makes CMS edits reach captainscabin.pages.dev.
+  #
+  # Needs the repo secret CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages >
+  # Edit). Until it exists every step below is skipped, so the job passes.
+  cloudflare:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: f71a9d0fd5bd7ea7a5aa3781cd02374a
+    steps:
+      - name: Checkout
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Install Node.js
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        run: npm ci
+
+      - name: Build
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        run: npm run build
+
+      - name: Verify build
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        run: node scripts/verify-build.mjs
+
+      # Version pinned for the same reason the actions are pinned to SHAs.
+      - name: Deploy to Cloudflare Pages
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        run: npx --yes wrangler@4.149.0 pages deploy out --project-name captainscabin --branch main
